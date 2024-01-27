@@ -1,12 +1,19 @@
-import React from 'react'
-import Signup from './components/Signup'
+import React from "react";
+import { Routes, Route } from "react-router-dom";
+import MainLayout from "./components/MainLayout";
+import Dashboard from "./components/pages/Dashboard";
 
-const App = () => {
-  return (
-    <div>
-      <h1 className='text-4xl font-bold text-red-950 text-center pt-4'>This is  My React</h1>
-    </div>
-  )
-}
+const App = ( ) => {
 
-export default App
+    return (
+        <div>
+            <Routes>
+                <Route path="/" element={<MainLayout />}>
+                    <Route index element={<Dashboard />} />
+                </Route>
+            </Routes>
+        </div>
+    );
+};
+
+export default App;
