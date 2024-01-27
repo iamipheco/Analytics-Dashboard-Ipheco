@@ -48,6 +48,7 @@ const lastOrdersData = [
     userImage: userImage5,
   },
 ];
+{/* <div className={`fixed inset-y-0 left-0 w-64 bg-gray-800 text-white p-4 overflow-y-auto transform transition-transform ${isOpen ? 'translate-x-0' : '-translate-x-full'}`}> */}
 
 const LastOrdersTable = () => (
   <div className="w-full bg-white rounded-xl shadow p-2  dark:bg-slate-700 ">

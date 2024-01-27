@@ -21,7 +21,7 @@ const Dashboard = () => {
         <LastOrdersTable />
       </div>
       {/* grid 4 */}
-      <div className="col-span-2 ">
+      <div className="col-span-3">
         <Platforms />
       </div>
     </div>

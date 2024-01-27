@@ -35,7 +35,7 @@ const Sidebar = () => {
 
 
     return (
-        <div>
+        <div className="">
             <div
                 className="block absolute top-6 left-8 "
                 onClick={() => setIsOpen(!isOpen)}
@@ -47,7 +47,7 @@ const Sidebar = () => {
             <div
                 className={`${
                     isOpen ? "lg:w-48" : "hidden lg:block lg:w-20 translate-x-0:"
-                } fixed inset-y-0 left-0 overflow-y-auto sm:w-52 h-screen p-5 bg-[#F7F8FA] dark:text-gray-200 dark:bg-slate-800 dark:border-r-[1px] border-r-2 border-[#EBECF2] dark:border-slate-600 transform transition-transform duration-500`}
+                } fixed sm:relative inset-y-0 left-0 overflow-y-auto sm:overflow-y-hidden sm:w-52 h-screen p-5 bg-[#F7F8FA] dark:text-gray-200 dark:bg-slate-800 dark:border-r-[1px] border-r-2 border-[#EBECF2] dark:border-slate-600 transform transition-transform duration-500`}
             >
                 <div
                     className="lg:block lg:absolute -right-[2px] top-[98px] cursor-pointer hidden"
@@ -70,7 +70,7 @@ const Sidebar = () => {
                     </svg>
                 </div>
                 <div
-                    className="lg:hidden sm:block absolute right-1 top-4 sm:top-7 sm:right-6 duration-500 -translate-x-full "
+                    className="lg:hidden sm:block absolute -right-[2px] top-3 sm:top-4 sm:-right-1 duration-500 -translate-x-full "
                     onMouseEnter={handleMouseEnter2}
                     onMouseLeave={handleMouseLeave2}
                     onClick={() => setIsOpen(!isOpen)}
@@ -91,13 +91,15 @@ const Sidebar = () => {
                         alt="logo"
                     />
                     <h1
-                        className={`lg:text-[18px] text-[15px] origin-left pt-2 font-bold font-sans duration-500 ${
+                        className={` flex flex-col sm:text-[22px] lg:text-[24px] text-[18px] origin-left pt-2 font-bold font-sans duration-200 ${
                             !isOpen && "scale-0"
                         }`}
                     >
                         {" "}
                         FASTA
                     </h1>
+                    <span className={`absolute right-6 top-[33px] sm:top-[33px] sm:right-6  md:top-[33px] md:right-6 lg:right-6 sm md lg text-[8px] bg-orange-500 dark:bg-orange-400 rounded-full p-[2px] font-bold
+                    ${!isOpen && "scale-0"}`}>yo!</span>
                 </div>
                 <div className="mt-10 flex flex-col gap-4 relative">
                     {sideData.map((data, i) => (
