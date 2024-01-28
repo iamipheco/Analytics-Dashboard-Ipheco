@@ -4,6 +4,7 @@ import ImgLogo from "../assets/img/logo.png";
 import { sideData } from "./Data";
 import { Link } from "react-router-dom";
 import DarkModeToggle from "./DarkModeToggle";
+import DarkToggleX from "./DarkToggleX";
 
 const Sidebar = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -45,7 +46,7 @@ const Sidebar = () => {
             <div
                 className={`${
                     isOpen ? "lg:w-60" : "hidden lg:block lg:w-20 translate-x-0:"
-                } fixed sm:relative inset-y-0 left-0 overflow-y-auto sm:overflow-y-hidden w-[200px] z-30  sm:w-56 h-screen p-5 bg-[#F7F8FA] dark:text-gray-200 dark:bg-slate-800 dark:border-r-[1px] border-r-2 border-[#EBECF2] dark:border-slate-600 font-semibold transform duration-500 transition-colors`}
+                } fixed sm:relative inset-y-0 left-0 overflow-y-auto sm:overflow-y-hidden w-[200px] z-10  sm:w-56 h-screen p-5 bg-[#F7F8FA] dark:text-gray-200 dark:bg-slate-800 dark:border-r-[1px] border-r-2 border-[#EBECF2] dark:border-slate-600 font-semibold transform duration-500 transition-colors`}
             >
                 <div
                     className="lg:block lg:absolute -right-[2px] top-[98px] cursor-pointer hidden"
@@ -63,7 +64,7 @@ const Sidebar = () => {
                     >
                         <path
                             d="M6.53467e-06 3.02509C7.11773e-06 1.42129 1.40951 0.182713 3 0.388889V21C1.34315 21 4.88293e-07 19.6569 1.09063e-06 18L6.53467e-06 3.02509Z"
-                            fill={hoveredIcons[0] ? "#34CAA5" : "#697689"}
+                            fill={hoveredIcons[0] ? "#34CAA5" : "#697689"} 
                         />
                     </svg>
                 </div>
@@ -96,7 +97,7 @@ const Sidebar = () => {
                         {" "}
                         FASTA
                     </h1>
-                    <span className={`absolute right-[70px] top-10 sm:top-10 sm:right-[85px]  md:top-[46px] md:right-[70px] lg:right-6 md lg text-[8px] bg-orange-500 dark:bg-orange-400 rounded-full p-[2px] font-extrabold
+                    <span className={`absolute right-[70px] top-10 sm:top-10 sm:right-[85px]  md:top-[46px] md:right-[70px] lg:right-20 md lg text-[8px] bg-orange-500 dark:bg-orange-400 rounded-full p-[2px] font-extrabold
                     ${!isOpen && "scale-0"}`}>yo!</span>
                 </div>
                 <div className="mt-10 flex flex-col gap-4 relative">
@@ -105,7 +106,7 @@ const Sidebar = () => {
                             to={data.link}
                             key={i}
                             className={`${
-                                data.margin && "mt-28"
+                                data.margin && "mt-24"
                             } group flex items-center rounded-md cursor-pointer hover:bg-[#34CAA5] dark:hover:text-slate-900 hover:text-white transition-all duration-300 lg:text-sm text-[15px]  gap-3 font-medium p-2 `}
                             onMouseEnter={() => handleMouseEnter(i + 1)}
                             onMouseLeave={() => handleMouseLeave(i + 1)}
@@ -136,8 +137,11 @@ const Sidebar = () => {
                         </Link>
                     ))}
                 
-                <div className="absolute top-[58%] right-[48%] sm:right-[55%] sm:top-[59%] ">
+                <div className={`absolute top-[58%] right-[48%] sm:right-[52%] sm:top-[59%] lg:left-2 ${!isOpen ? "lg:hidden":""}`}>
                     <DarkModeToggle />
+                </div>
+                <div className={`absolute hidden lg:block lg:right-0 lg:top-[57%] ${!isOpen ? "" : "lg:hidden"}`}>
+                    <DarkToggleX />
                 </div>
             </div>
             </div>

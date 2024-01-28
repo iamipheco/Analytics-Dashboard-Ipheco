@@ -10,11 +10,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@syncfusion/ej2-react-calendars": "^24.1.47",
     "chart.js": "^4.4.1",
     "chartjs-plugin-datalabels": "^2.2.0",
     "iconsax-react": "^0.0.8",
     "react": "^18.2.0",
-    "react-calendar": "^4.8.0",
     "react-chartjs-2": "^5.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^5.0.1",
