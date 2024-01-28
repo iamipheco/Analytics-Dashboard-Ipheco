@@ -56,7 +56,7 @@ const LastOrdersTable = () => (
         <p className="font-semibold text-sm mb-3 text-[#26282C] dark:text-white ">Last Orders</p>
         <span className="font-[500px] text-sm text-[#34CAA5] hover:underline">See All</span>
       </div>
-<div className="overflow-auto h-[230px]">
+<div className="overflow-x-auto overflow-y-hidden h-[250px]">
     <table className="w-full text-left text-xs ">
       <thead className="text-xs text-[#737373] dark:text-white">
         <tr>
@@ -80,7 +80,7 @@ const LastOrdersTable = () => (
       <tbody className="">
         {lastOrdersData.map((order, index) => (
           <tr key={index} className={index % 2 === 0 ? "dark:text-slate-700" : "dark:bg-slate-600 "}>
-            <td className=" pl-2 px-10 sm:px-3 py-1 border-b-[1px] dark:border-slate-500 dark:text-white">
+            <td className="  sm:px-3 sm:py-1 border-b-[1px] dark:border-slate-500 dark:text-white">
               <span className="flex items-center">
                 <img
                   src={order.userImage}
@@ -90,7 +90,7 @@ const LastOrdersTable = () => (
                 {order.name}
               </span>
             </td>
-            <td className="px-5 sm:px-4 py-2 border-b-[1px] dark:border-slate-500 text-[#737373] dark:text-slate-100">
+            <td className=" sm:px-4 smpy-2 border-b-[1px] dark:border-slate-500 sm:text-[#737373] dark:text-slate-100">
               {order.date}
             </td>
             <td className="px-4 py-2 border-b-[1px] dark:border-slate-500 font-[500px] text-[#0D062D] dark:font-medium dark:text-emerald-400 ">

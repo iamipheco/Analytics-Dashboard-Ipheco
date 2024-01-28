@@ -100,7 +100,7 @@ const MyBarChart = () => {
                     </div>
                 </div>
             </div>
-            <div className="mt-5 h-[140px] sm:h-[180px] md:h-[220px] lg:h-[250px]">
+            <div className="mt-5 h-[140px] sm:h-[180px] md:h-[220px] lg:h-[270px]">
                 <Bar data={data} options={options} />
             </div>
         </div>

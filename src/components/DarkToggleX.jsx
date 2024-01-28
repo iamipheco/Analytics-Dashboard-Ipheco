@@ -8,6 +8,15 @@ export const useDarkMode = () => {
         window.matchMedia("(prefers-color-scheme: dark)").matches)
   );
 
+//   useEffect(() => {
+//     document.documentElement.dataset.theme = isDarkMode ? 'dark' : 'light';
+//     localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
+//   }, [isDarkMode]);
+
+//   const toggleDarkMode = () => {
+//     setIsDarkMode(prevMode => !prevMode);
+//   };
+
   useEffect(() => {
     if (isDarkMode) {
       document.documentElement.classList.add("dark");
@@ -25,11 +34,11 @@ export const useDarkMode = () => {
   return { isDarkMode, toggleDarkMode };
 };
 
-const DarkModeToggle = () => {
+const DarkToggleX = () => {
   const { isDarkMode, toggleDarkMode } = useDarkMode();
 
   return (
-    <div className="flex items-center w-[76px] h-[40px] lg:w-[89px] lg:h-[45px] bg-slate-300 rounded-full">
+    <div className="flex items-center w-[76px] h-[40px] lg:w-[40px] lg:h-[76px] bg-slate-300 rounded-full">
       <label htmlFor="darkModeToggle" className="cursor-pointer">
         <div className="relative">
           <input
@@ -40,21 +49,22 @@ const DarkModeToggle = () => {
           <div className=" text-slate-200 rounded-full shadow-inner relative">
             <div className={`${isDarkMode ? "translate-x-full md:translate-y-full" : ""} `} onClick={toggleDarkMode}>
               {isDarkMode ? (
-                <div className="p-1 lg:p-2 bg-slate-600 rounded-full absolute -top-[15px] left-10 lg:-top-[19px] lg:left-[45px]">
+                <div className="p-1 bg-slate-600 rounded-full absolute top-1 -right-[35px]">
                   <Moon size="22" color="#B2ABAB" variant="Bold"/></div>
                 
-              ) : (<div className="p-1 lg:p-2 bg-[#34CAA5] rounded-full absolute lg:-top-[19px] -top-[15px] left-1"> <Sun1 size="22" color="#FFFFFF" variant="Bold" /></div>
+              ) : (<div className="p-1 bg-[#34CAA5] rounded-full absolute bottom-1 left-[5px]"> <Sun1 size="22" color="#FFFFFF" variant="Bold" /></div>
                
               )}</div>
             </div>
           <div className=" text-slate-200 rounded-full shadow-inner relative ">
             <div className={`${isDarkMode ? "translate-y-full md:translate-x-full" : ""} `} onClick={toggleDarkMode}>
               {isDarkMode ? (
-                <div className="p-1 lg:p-2 rounded-full absolute -top-[15px] left-[5px] lg:-top-[19px] lg:left-1"> <Sun1 size="22" color="#A3A3A3" variant="Bold " /></div>
+                <div className="p-1 rounded-full absolute bottom-1 left-[5px]"> <Sun1 size="22" color="#A3A3A3" variant="Bold " /></div>
                 
               ) : (
 
-              <div className="p-1 lg:p-2 rounded-full absolute -top-[15px] lg:-top-[20px] left-10 lg:left-[49px]">
+              <div className="p-1 bg-[#cbcbcb] rounded-full absolute top-1
+               left-[5px]">
                   <Moon size="22" color="#B2ABAB" variant="Bold"/></div>
                
               )}</div>
@@ -65,4 +75,4 @@ const DarkModeToggle = () => {
   );
 };
 
-export default DarkModeToggle;
+export default DarkToggleX;
