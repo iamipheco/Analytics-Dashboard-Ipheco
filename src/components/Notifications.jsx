@@ -25,11 +25,11 @@ const Notifications = () => {
                     size="18"
                     color={isHovered ? "#fff" : "#697689"}
                     variant="Broken"
-                    className="w-[22px] sm:w-[18px] md:w-[24px] lg:w-[28px] h-[22px] sm:h-[18px] md:h-[24px] lg:h-[28px] "
+                    className="w-[22px]  md:w-[24px] lg:w-[28px] h-[22px] md:h-[24px] lg:h-[28px] "
                 />
 
                 {/* Badge for unread messages */}
-                <div className="absolute -top-1 -right-2 sm:-top-1 sm:-right-1 bg-red-500 w-4 h-4 sm:w-5 sm:h-5 rounded-full flex items-center justify-center text-white text-[8px] font-semibold">
+                <div className="absolute -top-1 -right-2 sm:-top-1 sm:-right-1 bg-red-500 w-4 h-4 md:w-5 md:h-5 rounded-full flex items-center justify-center text-white text-[8px] font-semibold">
                     3
                 </div>
             </div>

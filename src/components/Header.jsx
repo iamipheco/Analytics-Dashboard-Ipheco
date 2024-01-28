@@ -10,7 +10,7 @@ const Header = () => {
     return (
         <>
             <div className=" p-5 flex justify-center items-center border-b-[3px] border-b-[#f4f4f4] bg-[#fafafa] dark:bg-slate-800 dark:border-slate-600 dark:border-b-[2px] ">
-                <div className=" mb-2 sm:mb-1 ml-16 lg:ml-5  flex-auto lg:w-60 text-[12px] sm:text-[16px] lg:text-[16px] dark:text-white text-[#26282C] font-semibold transition-all duration-700">
+                <div className=" mb-1 sm:mb-1 ml-16 lg:ml-5  flex-auto lg:w-60 text-[12px] sm:text-[16px] lg:text-[16px] dark:text-white text-[#26282C] font-semibold transition-all duration-700">
                     Dashboard
                 </div>
                 <div className="mr-5 ">
@@ -26,7 +26,7 @@ const Header = () => {
                         />
                     </div>
                 </div>
-                <div className="mr-4 hidden md:block md:shrink-0">
+                <div className="mr-4 hidden md:block">
                     <CalendarPaper />
                 </div>
                 <div className="mr-5 md-:shrink-0">

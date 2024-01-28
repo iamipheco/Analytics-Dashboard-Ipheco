@@ -53,11 +53,11 @@ const lastOrdersData = [
 const LastOrdersTable = () => (
   <div className="w-full bg-white rounded-xl shadow p-2  dark:bg-slate-700 ">
       <div className="flex justify-between px-3 p-2">
-        <p className="font-semibold text-sm text-[#26282C] dark:text-white ">Last Orders</p>
+        <p className="font-semibold text-sm mb-3 text-[#26282C] dark:text-white ">Last Orders</p>
         <span className="font-[500px] text-sm text-[#34CAA5] hover:underline">See All</span>
       </div>
-
-    <table className="w-full text-left text-xs">
+<div className="overflow-auto h-[230px]">
+    <table className="w-full text-left text-xs ">
       <thead className="text-xs text-[#737373] dark:text-white">
         <tr>
           <th scope="col" className="pl-6 px-3 py-3">
@@ -80,7 +80,7 @@ const LastOrdersTable = () => (
       <tbody className="">
         {lastOrdersData.map((order, index) => (
           <tr key={index} className={index % 2 === 0 ? "dark:text-slate-700" : "dark:bg-slate-600 "}>
-            <td className=" pl-2 px-3 py-1 border-b-[1px] dark:text-white">
+            <td className=" pl-2 px-10 sm:px-3 py-1 border-b-[1px] dark:border-slate-500 dark:text-white">
               <span className="flex items-center">
                 <img
                   src={order.userImage}
@@ -90,21 +90,21 @@ const LastOrdersTable = () => (
                 {order.name}
               </span>
             </td>
-            <td className="px-4 py-2 border-b-[1px] text-[#737373] dark:text-slate-100">
+            <td className="px-5 sm:px-4 py-2 border-b-[1px] dark:border-slate-500 text-[#737373] dark:text-slate-100">
               {order.date}
             </td>
-            <td className="px-4 py-2 border-b-[1px] font-[500px] text-[#0D062D] dark:font-medium dark:text-emerald-400">
+            <td className="px-4 py-2 border-b-[1px] dark:border-slate-500 font-[500px] text-[#0D062D] dark:font-medium dark:text-emerald-400 ">
               {order.amount}
             </td>
             <td
-              className={`px-4 py-2 border-b-[1px] ${
+              className={`px-4 py-2 border-b-[1px] dark:border-slate-500 ${
                 order.status === "Paid" ? "text-green-500 dark:font-medium dark:text-emerald-500" : "text-red-500 dark:font-medium dark:text-red-300"
               }`}
             >
               {order.status}
             </td>
-            <td className="px-4 py-2 border-b-[1px]">
-              <span className="flex items-center">
+            <td className="px-4 py-2 border-b-[1px] dark:border-slate-500">
+              <span className="flex items-center dark:hover:text-emerald-500 dark:text-slate-300 dark:hover:underline">
                 <DocumentText
                   size="16"
                   color="#697689"
@@ -118,6 +118,7 @@ const LastOrdersTable = () => (
         ))}
       </tbody>
     </table>
+    </div>
   </div>
 );
 
