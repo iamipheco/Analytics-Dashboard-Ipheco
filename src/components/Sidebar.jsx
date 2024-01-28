@@ -35,19 +35,17 @@ const Sidebar = () => {
 
 
     return (
-        <div>
+        <div className="">
             <div
-                className="block absolute top-6 left-8 "
+                className="block absolute top-6 left-8 pt-1 md:pt-4  "
                 onClick={() => setIsOpen(!isOpen)}
             >
                 <HambergerMenu size="24" color="#697689" className="block" />
             </div>
-
-            {/* <div className={`fixed inset-y-0 left-0 w-64 bg-gray-800 text-white p-4 overflow-y-auto transform transition-transform ${isOpen ? 'translate-x-0' : '-translate-x-full'}`}> */}
             <div
                 className={`${
-                    isOpen ? "lg:w-48" : "hidden lg:block lg:w-20 translate-x-0:"
-                } fixed inset-y-0 left-0 overflow-y-auto sm:w-52 h-screen p-5 bg-[#F7F8FA] dark:text-gray-200 dark:bg-slate-800 dark:border-r-[1px] border-r-2 border-[#EBECF2] dark:border-slate-600 transform transition-transform duration-500`}
+                    isOpen ? "lg:w-60" : "hidden lg:block lg:w-20 translate-x-0:"
+                } fixed sm:relative inset-y-0 left-0 overflow-y-auto sm:overflow-y-hidden w-[200px] z-30  sm:w-56 h-screen p-5 bg-[#F7F8FA] dark:text-gray-200 dark:bg-slate-800 dark:border-r-[1px] border-r-2 border-[#EBECF2] dark:border-slate-600 font-semibold transform duration-500 transition-colors`}
             >
                 <div
                     className="lg:block lg:absolute -right-[2px] top-[98px] cursor-pointer hidden"
@@ -70,7 +68,7 @@ const Sidebar = () => {
                     </svg>
                 </div>
                 <div
-                    className="lg:hidden sm:block absolute right-1 top-4 sm:top-7 sm:right-6 duration-500 -translate-x-full "
+                    className="lg:hidden sm:block absolute -right-3 top-4 sm:top-4 sm:-right-1 duration-500 -translate-x-full "
                     onMouseEnter={handleMouseEnter2}
                     onMouseLeave={handleMouseLeave2}
                     onClick={() => setIsOpen(!isOpen)}
@@ -79,25 +77,27 @@ const Sidebar = () => {
                         size=""
                         color={isHover ? "#34CAA5" : "#697689"}
                         variant="Broken"
-                        className="w-[14px] sm:w-[18px] "
+                        className="w-[28px] sm:w-[32px] "
                     />
                 </div>
                 <div className="flex gap-x-4 items-center">
                     <img
-                        className={`w-6 md:w-8 cursor-pointer duration-500 pt-2 ${
+                        className={`w-6 md:w-8 cursor-pointer duration-500 pt-6 ${
                             isOpen && "rotate-[360deg]"
                         }`}
                         src={ImgLogo}
                         alt="logo"
                     />
                     <h1
-                        className={`lg:text-[18px] text-[15px] origin-left pt-2 font-bold font-sans duration-500 ${
+                        className={` flex flex-col sm:text-[24px]  text-[20px] transition-all pt-5 font-bold lg:text-[28px] font-sans duration-200 ${
                             !isOpen && "scale-0"
                         }`}
                     >
                         {" "}
                         FASTA
                     </h1>
+                    <span className={`absolute right-[70px] top-10 sm:top-10 sm:right-[85px]  md:top-[46px] md:right-[70px] lg:right-6 md lg text-[8px] bg-orange-500 dark:bg-orange-400 rounded-full p-[2px] font-extrabold
+                    ${!isOpen && "scale-0"}`}>yo!</span>
                 </div>
                 <div className="mt-10 flex flex-col gap-4 relative">
                     {sideData.map((data, i) => (
@@ -106,7 +106,7 @@ const Sidebar = () => {
                             key={i}
                             className={`${
                                 data.margin && "mt-28"
-                            } group flex items-center rounded-md cursor-pointer hover:bg-[#34CAA5] dark:hover:text-slate-900 hover:text-white transition-all duration-300 lg:text-sm text-xs  gap-3 font-medium p-2 `}
+                            } group flex items-center rounded-md cursor-pointer hover:bg-[#34CAA5] dark:hover:text-slate-900 hover:text-white transition-all duration-300 lg:text-sm text-[15px]  gap-3 font-medium p-2 `}
                             onMouseEnter={() => handleMouseEnter(i + 1)}
                             onMouseLeave={() => handleMouseLeave(i + 1)}
                         >
@@ -135,10 +135,11 @@ const Sidebar = () => {
                             </h2>
                         </Link>
                     ))}
-                </div>
-                <div className="absolute top-[60%] ml-1">
+                
+                <div className="absolute top-[58%] right-[48%] sm:right-[55%] sm:top-[59%] ">
                     <DarkModeToggle />
                 </div>
+            </div>
             </div>
         </div>
     );

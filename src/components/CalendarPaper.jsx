@@ -52,6 +52,7 @@ const CalendarPaper = () => {
             size="22"
             color={isHovered ? "#fff" : "#697689"}
             variant="Broken"
+            className="w-[22px] sm:w-[18px] md:w-[24px] lg:w-[28px] h-[22px] sm:h-[18px] md:h-[24px] lg:h-[28px] "
           />
         </div>
         <p

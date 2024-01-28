@@ -26,7 +26,7 @@ const Platforms = () => {
         <span className="font-[500px] text-sm text-[#34CAA5] hover:underline">See All</span>
       </div>
 
-      <div className="flex flex-col overflow-y-auto h-[230px]"> 
+      <div className="flex flex-col overflow-auto h-[230px]"> 
         <ProgressBar name="Book Bazaar" progress={30} amount={'2,500,000'}/>
         <ProgressBar name="Artisan Alsle" progress={60} amount={'1,800,000'}/>
         <ProgressBar name="Toy Troop" progress={50} amount={'1,300,000'}/>
