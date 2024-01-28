@@ -38,7 +38,7 @@ const DarkModeToggle = () => {
   const { isDarkMode, toggleDarkMode } = useDarkMode();
 
   return (
-    <div className="flex items-center">
+    <div className="flex items-center w-[64px] h-[36px] lg:w-[42px] lg:h-[24px] bg-slate-300 rounded-full">
       <label htmlFor="darkModeToggle" className="cursor-pointer">
         <div className="relative">
           <input
@@ -46,13 +46,25 @@ const DarkModeToggle = () => {
             id="darkModeToggle"
             className="sr-only"
           />
-          <div className="md:w-[30px] md:h-[60px] bg-[#FFFFFF] rounded-full shadow-inner">
-            <div className={`${isDarkMode ? "translate-y-full" : ""} `} onClick={toggleDarkMode}>
+          <div className=" text-slate-200 rounded-full shadow-inner absolute -top-[14px] -right-8">
+            <div className={`${isDarkMode ? "translate-x-full md:translate-y-full" : ""} `} onClick={toggleDarkMode}>
               {isDarkMode ? (
-                <div className="p-1 bg-[#cbcbcb] rounded-full">
+                <div className="p-[3px] bg-slate-600 rounded-full">
                   <Moon size="22" color="#B2ABAB" variant="Bold"/></div>
                 
-              ) : (<div className="p-1 bg-[#34CAA5] rounded-full"> <Sun1 size="22" color="#FFFFFF" variant="Bold" /></div>
+              ) : (<div className="p-[3px] bg-[#34CAA5] rounded-full"> <Sun1 size="22" color="#FFFFFF" variant="Bold" /></div>
+               
+              )}</div>
+            </div>
+          <div className=" text-slate-200 rounded-full shadow-inner relative ">
+            <div className={`${isDarkMode ? "translate-y-full md:translate-x-full" : ""} `} onClick={toggleDarkMode}>
+              {isDarkMode ? (
+                <div className="p-[3px] rounded-full absolute -top-[14px] -right-8"> <Sun1 size="22" color="#A3A3A3" variant="Bold " /></div>
+                
+              ) : (
+
+              <div className="p-[3px] bg-[#cbcbcb] rounded-full absolute -top-[14px] -right-[60px]">
+                  <Moon size="22" color="#B2ABAB" variant="Bold"/></div>
                
               )}</div>
             </div>
