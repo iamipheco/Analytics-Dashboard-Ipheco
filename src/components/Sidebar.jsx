@@ -136,7 +136,7 @@ const Sidebar = () => {
                         </Link>
                     ))}
                 
-                <div className="absolute top-[58%] right-[45%] sm:right-[60%] sm:top-[65%] ">
+                <div className="absolute top-[58%] right-[48%] sm:right-[55%] sm:top-[59%] ">
                     <DarkModeToggle />
                 </div>
             </div>
