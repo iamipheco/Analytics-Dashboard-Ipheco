@@ -91,9 +91,9 @@ const MyBarChart = () => {
                 <div className="flex justify-center items-center">
                     <h2 className="text-xs font-light mr-2">Sort by :</h2>
                     <div className="flex items-center gap-2 text-[#3A3F51] dark:text-white">
-                        <div className="flex items-center justify-center gap-2 px-2 py-1 border rounded-full text-xs">
+                        <div className="flex items-center justify-center gap-2 px-2 py-1 border rounded-full text-[10px]">
                             <div>Weekly</div>
-                            <div className="hover:bg-[#34CAA5] p-1 rounded-full">
+                            <div className="p-1 rounded-full">
                                 <ArrowDown2 size="14" color="#697689" />
                             </div>
                         </div>

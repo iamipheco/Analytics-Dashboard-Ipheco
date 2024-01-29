@@ -14,7 +14,7 @@ const MainLayout = () => {
             {/* Main Content */}
             <div className="flex flex-col flex-1 overflow-hidden">
                 <Header />
-                <div className="flex-1 overflow-x-hidden overflow-y-auto p-4  bg-[#FAFAFA] dark:bg-slate-800">
+                <div className="p-5 flex-1 overflow-x-hidden overflow-y-auto bg-[#FAFAFA] dark:bg-slate-800">
                     <Outlet />
                 </div>
             </div>

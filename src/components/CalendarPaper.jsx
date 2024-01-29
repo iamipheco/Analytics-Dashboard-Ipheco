@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { CalendarComponent } from "@syncfusion/ej2-react-calendars";
 import { Calendar as CalendarIcon } from "iconsax-react";
+import { useDarkMode } from "./DarkModeToggle";
 
 const CalendarPaper = () => {
   const [isHovered, setIsHovered] = useState(false);
