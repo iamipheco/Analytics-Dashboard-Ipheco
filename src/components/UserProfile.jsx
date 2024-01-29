@@ -62,11 +62,11 @@ const UserProfile = () => {
                 </div>
                 <div
                     ref={userProRef}
-                    className=" hidden sm:block hover:rounded-full p-1 transition-colors duration-500 dark:hover:text-emerald-500"
+                    className=" hidden sm:block p-1 transition-colors duration-500"
                 >
                     <ArrowDown2
                         size="16"
-                        color="#fff"
+                        color="#E1DFDF"
                         variant="Outline"
                         className="hidden sm:block"
                     />

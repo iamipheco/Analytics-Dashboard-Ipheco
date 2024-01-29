@@ -29,7 +29,7 @@ const DarkModeToggle = () => {
   const { isDarkMode, toggleDarkMode } = useDarkMode();
 
   return (
-    <div className="flex items-center w-[76px] h-[40px] lg:w-[89px] lg:h-[45px] bg-slate-300 rounded-full">
+    <div className="flex items-center w-[76px] h-[40px] lg:w-[89px] lg:h-[45px] bg-slate-200 rounded-full">
       <label htmlFor="darkModeToggle" className="cursor-pointer">
         <div className="relative">
           <input

@@ -54,25 +54,25 @@ const LastOrdersTable = () => (
   <div className="w-full bg-white rounded-xl shadow p-2  dark:bg-slate-700 ">
       <div className="flex justify-between px-3 p-2">
         <p className="font-semibold text-sm mb-3 text-[#26282C] dark:text-white ">Last Orders</p>
-        <span className="font-[500px] text-sm text-[#34CAA5] hover:underline">See All</span>
+        <span className="font-[500px] text-sm text-[#34CAA5] hover:underline dark:hover:text-[#ff7438] cursor-pointer">See All</span>
       </div>
 <div className="overflow-x-auto overflow-y-hidden h-[250px]">
     <table className="w-full text-left text-xs ">
       <thead className="text-xs text-[#737373] dark:text-white">
         <tr>
-          <th scope="col" className="pl-6 px-3 py-3">
+          <th scope="col" className="px-16 sm:pl-6 sm:px-3 sm:py-3">
             Name
           </th>
-          <th scope="col" className="pl-4 px-3 py-3">
+          <th scope="col" className="px-8  sm:pl-4 sm:px-3 sm:py-3">
             Date
           </th>
-          <th scope="col" className="pl-4 px-3 py-3">
+          <th scope="col" className="px-5 sm:pl-4 sm:px-3 sm:py-3">
             Amount
           </th>
-          <th scope="col" className="pl-4 px-3 py-3">
+          <th scope="col" className="px-4 sm:pl-4 sm:px-3 sm:py-3">
             Status
           </th>
-          <th scope="col" className="pl-6 px-3 py-3">
+          <th scope="col" className="px-3 sm:pl-6 sm:px-3 sm:py-3">
             Invoice
           </th>
         </tr>
@@ -80,7 +80,7 @@ const LastOrdersTable = () => (
       <tbody className="">
         {lastOrdersData.map((order, index) => (
           <tr key={index} className={index % 2 === 0 ? "dark:text-slate-700" : "dark:bg-slate-600 "}>
-            <td className="  sm:px-3 sm:py-1 border-b-[1px] dark:border-slate-500 dark:text-white">
+            <td className="py-[6px] sm:px-3 sm:py-1 border-b-[1px] dark:border-slate-500 dark:text-white">
               <span className="flex items-center">
                 <img
                   src={order.userImage}
@@ -90,20 +90,20 @@ const LastOrdersTable = () => (
                 {order.name}
               </span>
             </td>
-            <td className=" sm:px-4 smpy-2 border-b-[1px] dark:border-slate-500 sm:text-[#737373] dark:text-slate-100">
+            <td className="pl-3 sm:px-4 sm:py-2 border-b-[1px] dark:border-slate-500 sm:text-[#737373] dark:text-slate-100">
               {order.date}
             </td>
-            <td className="px-4 py-2 border-b-[1px] dark:border-slate-500 font-[500px] text-[#0D062D] dark:font-medium dark:text-emerald-400 ">
+            <td className="pl-3 sm:px-4 sm:py-2 border-b-[1px] dark:border-slate-500 font-[500px] text-[#0D062D] dark:font-medium dark:text-emerald-400 ">
               {order.amount}
             </td>
             <td
-              className={`px-4 py-2 border-b-[1px] dark:border-slate-500 ${
+              className={`pl-4 sm:px-4 sm:py-2 border-b-[1px] dark:border-slate-500 ${
                 order.status === "Paid" ? "text-green-500 dark:font-medium dark:text-emerald-500" : "text-red-500 dark:font-medium dark:text-red-300"
               }`}
             >
               {order.status}
             </td>
-            <td className="px-4 py-2 border-b-[1px] dark:border-slate-500">
+            <td className="sm:px-4 sm:py-2 border-b-[1px] dark:border-slate-500">
               <span className="flex items-center dark:hover:text-emerald-500 dark:text-slate-300 dark:hover:underline">
                 <DocumentText
                   size="16"

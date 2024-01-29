@@ -8,15 +8,6 @@ export const useDarkMode = () => {
         window.matchMedia("(prefers-color-scheme: dark)").matches)
   );
 
-//   useEffect(() => {
-//     document.documentElement.dataset.theme = isDarkMode ? 'dark' : 'light';
-//     localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
-//   }, [isDarkMode]);
-
-//   const toggleDarkMode = () => {
-//     setIsDarkMode(prevMode => !prevMode);
-//   };
-
   useEffect(() => {
     if (isDarkMode) {
       document.documentElement.classList.add("dark");
@@ -38,7 +29,7 @@ const DarkToggleX = () => {
   const { isDarkMode, toggleDarkMode } = useDarkMode();
 
   return (
-    <div className="flex items-center w-[76px] h-[40px] lg:w-[40px] lg:h-[76px] bg-slate-300 rounded-full">
+    <div className="flex items-center w-[76px] h-[40px] lg:w-[40px] lg:h-[76px] bg-slate-200 rounded-full">
       <label htmlFor="darkModeToggle" className="cursor-pointer">
         <div className="relative">
           <input
@@ -63,7 +54,7 @@ const DarkToggleX = () => {
                 
               ) : (
 
-              <div className="p-1 bg-[#cbcbcb] rounded-full absolute top-1
+              <div className="p-1 rounded-full absolute top-1
                left-[5px]">
                   <Moon size="22" color="#B2ABAB" variant="Bold"/></div>
                

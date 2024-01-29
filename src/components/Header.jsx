@@ -6,6 +6,7 @@ import CalendarPaper from "./CalendarPaper";
 
 const Header = () => {
     const [isOpen, setIsOpen] = useState(false);
+    
 
     return (
         <>
@@ -14,7 +15,7 @@ const Header = () => {
                     Dashboard
                 </div>
                 <div className="mr-5 ">
-                    <div className="relative">
+                    <div className="relative lg:shrink-0 ml-5">
                         <CiSearch
                             className="lg:absolute lg:left-3 lg:top-1/2 lg:transform lg:-translate-y-1/2 dark:text-white text-gray-500 text-[22px]"
                             
@@ -26,10 +27,11 @@ const Header = () => {
                         />
                     </div>
                 </div>
-                <div className="mr-4 hidden md:block">
-                    <CalendarPaper />
+                <div className="mr-4 hidden md:block md:shrink-0">
+
+                <CalendarPaper />
                 </div>
-                <div className="mr-5 md-:shrink-0">
+                <div className="mr-5 md:shrink-0">
                     <Notifications />
                 </div>
                 <div className="mr-5 md:shrink-0">
