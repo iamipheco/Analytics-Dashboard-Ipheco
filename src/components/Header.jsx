@@ -17,7 +17,7 @@ const Header = () => {
                     <div className="relative lg:shrink-0 ml-5">
                         <CiSearch
                             className="lg:absolute lg:left-3 lg:top-1/2 lg:transform lg:-translate-y-1/2 dark:text-white text-gray-500 text-[22px]"
-                            
+                        
                         />
                         <input
                             type="text"
