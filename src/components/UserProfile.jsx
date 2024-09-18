@@ -87,6 +87,7 @@ const UserProfile = () => {
                                 Logout
                             </li>
                         </ul>
+                        
                     </div>
                 )}
             </div>

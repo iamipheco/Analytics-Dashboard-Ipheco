@@ -5,7 +5,6 @@ import Notifications from "./Notifications";
 import CalendarPaper from "./CalendarPaper";
 
 const Header = () => {
-    const [isOpen, setIsOpen] = useState(false);
     
 
     return (
@@ -23,7 +22,7 @@ const Header = () => {
                         <input
                             type="text"
                             placeholder="Search..."
-                            className="bg-white dark:bg-slate-700 rounded-full border dark:border-[1px] border-slate-600 pl-10 pr-4 py-2 outline-none placeholder-middle placeholder:dark:text-white dark:text-white hidden lg:block "
+                            className="bg-white dark:bg-slate-700 rounded-full border dark:border-[1px] border-slate-600 pl-10 pr-4 py-2 outline-none placeholder:dark:text-white dark:text-white hidden lg:block  "
                         />
                     </div>
                 </div>

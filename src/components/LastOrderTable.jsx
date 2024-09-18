@@ -60,19 +60,19 @@ const LastOrdersTable = () => (
     <table className="w-full text-left text-xs ">
       <thead className="text-xs text-[#737373] dark:text-white">
         <tr>
-          <th scope="col" className="px-16 sm:pl-6 sm:px-3 sm:py-3">
+          <th scope="col" className="pl-3 pr-18 sm:pl-6 sm:px-3 sm:py-3">
             Name
           </th>
-          <th scope="col" className="px-8  sm:pl-4 sm:px-3 sm:py-3">
+          <th scope="col" className="px-12  sm:pl-4 sm:px-3 sm:py-3">
             Date
           </th>
-          <th scope="col" className="px-5 sm:pl-4 sm:px-3 sm:py-3">
+          <th scope="col" className="px-4 sm:pl-4 sm:px-3 sm:py-3">
             Amount
           </th>
           <th scope="col" className="px-4 sm:pl-4 sm:px-3 sm:py-3">
             Status
           </th>
-          <th scope="col" className="px-3 sm:pl-6 sm:px-3 sm:py-3">
+          <th scope="col" className="px-2 sm:pl-6 sm:px-3 sm:py-3">
             Invoice
           </th>
         </tr>
@@ -85,12 +85,12 @@ const LastOrdersTable = () => (
                 <img
                   src={order.userImage}
                   alt={`${order.name}'s user`}
-                  className="rounded-full h-8 w-8 mx-2 mr-4  "
+                  className="rounded-full h-8 w-8 mx-3 sm:mx-2 sm:mr-4  "
                 />{" "}
                 {order.name}
               </span>
             </td>
-            <td className="pl-3 sm:px-4 sm:py-2 border-b-[1px] dark:border-slate-500 sm:text-[#737373] dark:text-slate-100">
+            <td className="pr-1 px-12 sm:pl-3 sm:px-4 sm:py-2 border-b-[1px] dark:border-slate-500 sm:text-[#737373] dark:text-slate-100">
               {order.date}
             </td>
             <td className="pl-3 sm:px-4 sm:py-2 border-b-[1px] dark:border-slate-500 font-[500px] text-[#0D062D] dark:font-medium dark:text-emerald-400 ">

@@ -19,43 +19,43 @@ export const sideData = [
     },
     {
         name: "Analytics",
-        link: "/analytics",
+        link: "/",
         icon: <TrendUp color="#697689" variant="Broken"/>,
     },
     {
         name: "User",
-        link: "/user",
+        link: "/",
         icon: <Profile2User color="#697689" variant="Broken"/>,
     },
     {
         name: "Messages",
-        link: "/messages",
+        link: "/",
         icon: <Box color="#697689" variant="Broken"/>,
     },
     {
         name: "Products",
-        link: "/products",
+        link: "/",
         icon: <DiscountShape color="#697689" variant="Broken"/>,
     },
     {
         name: "Support",
-        link: "/support",
+        link: "/",
         icon: <InfoCircle color="#697689" variant="Broken"/>,
     },
     {
         name: "Tips", 
-        link: "/tips",
+        link: "/",
         icon: <ArrowCircleRight2 color="#697689" variant="Broken"/>,
         margin: true,
     },
     {
         name: "Settings",
-        link: "/settings",
+        link: "/",
         icon: <Setting2 color="#697689" variant="Broken"/>,
     },
     {
         name: "Logout",
-        link: "/logout",
+        link: "/",
         icon: <Logout color="#697689" variant="Broken"/>
     }
 ];

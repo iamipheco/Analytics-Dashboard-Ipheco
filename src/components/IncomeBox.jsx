@@ -4,7 +4,8 @@ import { IoTrendingUp, IoTrendingDown } from "react-icons/io5";
 
 const IncomeBox= () => {
   return (
-    <div className="grid sm:grid-cols-2 sm-max:grid-cols-3 gap-4 ">
+    <div className="grid sm:grid-cols-2 sm-max:grid-cols-3
+     gap-4 ">
                     {/* first box 1 */}
                     <div className="flex flex-col gap-2 bg-[#FFFFFF] px-5 p-5 rounded-lg shadow   dark:bg-slate-700 dark:text-white">
                         <div className="flex justify-between items-center">
@@ -70,7 +71,7 @@ const IncomeBox= () => {
                         </div>
                     </div>
                     {/* second box 2 */}
-                    <div className="flex flex-col gap-2 bg-[#FFFFFF] px-5  p-2  rounded-lg shadow  dark:bg-slate-700 dark:text-white">
+                    <div className="flex flex-col gap-2 bg-[#FFFFFF] px-5  py-5  rounded-lg shadow  dark:bg-slate-700 dark:text-white">
                         <div className="flex justify-between items-center">
                             <div className="border rounded-full p-2">
                                 <I3DRotate
@@ -134,7 +135,7 @@ const IncomeBox= () => {
                         </div>
                     </div>
                     {/* Third box 3 */}
-                    <div className="flex flex-col gap-2 bg-[#FFFFFF] px-5  p-3 rounded-lg shadow   dark:bg-slate-700 dark:text-white">
+                    <div className="flex flex-col gap-2 bg-[#FFFFFF] px-5  p-3 h-[190px] rounded-lg shadow   dark:bg-slate-700 dark:text-white">
                         <div className="flex justify-between items-center">
                             <div className="border rounded-full p-2">
                                 <ShoppingCart
