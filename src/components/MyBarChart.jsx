@@ -1,106 +1,128 @@
-import React from "react";
+import { useCallback, useMemo, useState } from "react";
 import { Bar } from "react-chartjs-2";
-import {
-    Chart as ChartJS,
-    CategoryScale,
-    LinearScale,
-    BarElement,
-    Tooltip,
-    Legend,
-} from "chart.js";
-import { ArrowDown2 } from "iconsax-react";
+import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Tooltip } from "chart.js";
+import { ArrowDown2, TickCircle } from "iconsax-react";
+import { salesTrends } from "../data/dashboardData";
+import { useApp } from "../context/AppContext";
+import { useClickOutside } from "../hooks/useClickOutside";
 
-ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
+ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip);
 
-const gradientBackgroundColor = [
-    "rgba(52, 202, 165, 0.28)",
-    "rgba(52, 202, 165, 0.28)",
-    "rgba(52, 202, 165, 0.28)",
-    "rgba(52, 202, 165, 0.28)",
-    "rgba(52, 202, 165, 0.28)",
-    "rgba(52, 202, 165, 0.81)",
-    "rgba(52, 202, 165, 0.28)",
-    "rgba(52, 202, 165, 0.28)",
-    "rgba(52, 202, 165, 0.28)",
-    "rgba(52, 202, 165, 0.28)",
-    "rgba(52, 202, 165, 0.28)",
+const PERIODS = [
+    { id: "weekly", label: "Weekly" },
+    { id: "monthly", label: "Monthly" },
+    { id: "yearly", label: "Yearly" },
 ];
 
-const data = {
-    labels: [
-        "Jan",
-        "Feb",
-        "Mar",
-        "Apr",
-        "May",
-        "Jun",
-        "Jul",
-        "Aug",
-        "Sep",
-        "Oct",
-        "Nov",
-        "Dec",
-    ],
-    datasets: [
-        {
-            data: [
-                7.0, 20.0, 4.0, 30.0, 10.0, 45.0, 10.0, 22.0, 35.0, 5.0, 32.0,
-                28.0,
-            ],
-            backgroundColor: gradientBackgroundColor,
-            borderRadius: 20,
-        },
-    ],
-};
-
-const options = {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-        legend: {
-            display: false,
-        },
-    },
-    scales: {
-        x: {
-            grid: {
-                display: false,
-            },
-            ticks: {
-                color: "#6B7280", // X-axis ticks color
-            },
-        },
-        y: {
-            beginAtZero: true,
-            max: 50.0,
-            ticks: {
-                color: "#6B7280", // Y-axis ticks color
-                stepSize: 10.0,
-            },
-        },
-    },
-};
-
 const MyBarChart = () => {
+    const { isDarkMode } = useApp();
+    const [period, setPeriod] = useState("monthly");
+    const [menuOpen, setMenuOpen] = useState(false);
+    const close = useCallback(() => setMenuOpen(false), []);
+    const menuRef = useClickOutside(close, menuOpen);
+
+    const series = salesTrends[period];
+    const total = series.data.reduce((a, b) => a + b, 0);
+    const peakIndex = series.data.indexOf(Math.max(...series.data));
+
+    const data = useMemo(
+        () => ({
+            labels: series.labels,
+            datasets: [
+                {
+                    data: series.data,
+                    // Peak bar is solid; the rest are tinted.
+                    backgroundColor: series.data.map((_, i) =>
+                        i === peakIndex ? "rgba(52, 202, 165, 0.9)" : "rgba(52, 202, 165, 0.25)"
+                    ),
+                    hoverBackgroundColor: "rgba(52, 202, 165, 0.9)",
+                    borderRadius: 20,
+                    borderSkipped: false,
+                    maxBarThickness: 32,
+                },
+            ],
+        }),
+        [series, peakIndex]
+    );
+
+    const options = useMemo(() => {
+        const tick = isDarkMode ? "#CBD5E1" : "#6B7280";
+        const grid = isDarkMode ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.05)";
+        return {
+            responsive: true,
+            maintainAspectRatio: false,
+            animation: { duration: 400 },
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    backgroundColor: "#090C2C",
+                    padding: 10,
+                    cornerRadius: 8,
+                    displayColors: false,
+                    callbacks: { label: (ctx) => `$${ctx.parsed.y.toLocaleString()}k` },
+                },
+            },
+            scales: {
+                x: { grid: { display: false }, border: { display: false }, ticks: { color: tick } },
+                y: {
+                    beginAtZero: true,
+                    border: { display: false },
+                    grid: { color: grid, drawTicks: false },
+                    ticks: { color: tick, padding: 8, maxTicksLimit: 6, callback: (v) => `${v}k` },
+                },
+            },
+        };
+    }, [isDarkMode]);
+
+    const current = PERIODS.find((p) => p.id === period);
+
     return (
-        <div className=" overflow-hidden m-2 mt-1 lg:mt:0 bg-[#fff] dark:bg-slate-700 dark:text-white">
-            <div className="p flex justify-between items-center">
-                <h2 className="font-semibold text-sm text-[#26282C] dark:text-white">
-                    Sales Trends
-                </h2>
-                <div className="flex justify-center items-center">
-                    <h2 className="text-xs font-light mr-2">Sort by :</h2>
-                    <div className="flex items-center gap-2 text-[#3A3F51] dark:text-white">
-                        <div className="flex items-center justify-center gap-2 px-2 py-1 border rounded-full text-[10px]">
-                            <div>Weekly</div>
-                            <div className="p-1 rounded-full">
-                                <ArrowDown2 size="14" color="#697689" />
-                            </div>
-                        </div>
+        <div className="card p-5 h-full flex flex-col">
+            <div className="flex flex-wrap items-center justify-between gap-2">
+                <div>
+                    <h2 className="card-title">Sales Trends</h2>
+                    <p className="mt-0.5 text-xs text-[#737373] dark:text-slate-300">
+                        ${total.toLocaleString()}k total · peak in <span className="text-[#34CAA5] font-medium">{series.labels[peakIndex]}</span>
+                    </p>
+                </div>
+                <div className="flex items-center gap-2">
+                    <span className="text-xs text-[#3A3F51] dark:text-slate-300">Sort by:</span>
+                    <div ref={menuRef} className="relative">
+                        <button
+                            type="button"
+                            aria-haspopup="listbox"
+                            aria-expanded={menuOpen}
+                            onClick={() => setMenuOpen((o) => !o)}
+                            className="flex items-center gap-2 rounded-full border border-[#E1DFDF] dark:border-slate-500 px-3 py-1.5 text-xs text-[#3A3F51] dark:text-white hover:border-[#34CAA5]"
+                        >
+                            {current.label}
+                            <ArrowDown2 size="14" color="#697689" className={`transition-transform ${menuOpen ? "rotate-180" : ""}`} />
+                        </button>
+                        {menuOpen && (
+                            <ul role="listbox" className="popover right-0 w-36 py-1">
+                                {PERIODS.map((p) => (
+                                    <li key={p.id}>
+                                        <button
+                                            type="button"
+                                            role="option"
+                                            aria-selected={p.id === period}
+                                            onClick={() => {
+                                                setPeriod(p.id);
+                                                setMenuOpen(false);
+                                            }}
+                                            className="flex w-full items-center justify-between px-3 py-2 text-xs hover:bg-slate-50 dark:hover:bg-slate-600"
+                                        >
+                                            {p.label}
+                                            {p.id === period && <TickCircle size="14" color="#34CAA5" variant="Bold" />}
+                                        </button>
+                                    </li>
+                                ))}
+                            </ul>
+                        )}
                     </div>
                 </div>
             </div>
-            <div className="mt-5 h-[140px] sm:h-[180px] md:h-[220px] lg:h-[270px]">
+            <div className="mt-5 flex-1 min-h-[220px] lg:min-h-[260px]">
                 <Bar data={data} options={options} />
             </div>
         </div>

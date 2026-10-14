@@ -1,97 +1,75 @@
-import React, { useRef, useState, useEffect } from "react";
+import { useCallback, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { ArrowDown2, Logout, Moon, Profile, Setting2, Sun1, Wallet } from "iconsax-react";
 import UserProfPic from "../assets/img/user-prof.jpg";
-import { ArrowDown2 } from "iconsax-react";
+import { useApp } from "../context/AppContext";
+import { useClickOutside } from "../hooks/useClickOutside";
 
 const UserProfile = () => {
-    const [isHovered, setIsHovered] = useState(false);
-    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-    const userProRef = useRef(null);
+    const { isDarkMode, toggleDarkMode, requestLogout } = useApp();
+    const navigate = useNavigate();
+    const [open, setOpen] = useState(false);
+    const close = useCallback(() => setOpen(false), []);
+    const ref = useClickOutside(close, open);
 
-    const handleArrowClick = () => {
-        setIsDropdownOpen(!isDropdownOpen);
+    const run = (fn) => () => {
+        setOpen(false);
+        fn();
     };
 
-    useEffect(() => {
-     const handleClickOutside = (e) => {
-        if(userProRef.current && !userProRef.current.contains(e.target)){
-            setIsDropdownOpen(false)
-    }
-     };
+    const items = [
+        { label: "My profile", icon: Profile, onClick: run(() => toast.info("Profile page is coming soon.")) },
+        { label: "Billing", icon: Wallet, onClick: run(() => toast.info("Billing page is coming soon.")) },
+        { label: "Settings", icon: Setting2, onClick: run(() => navigate("/settings")) },
+        { label: isDarkMode ? "Light mode" : "Dark mode", icon: isDarkMode ? Sun1 : Moon, onClick: toggleDarkMode },
+    ];
 
-     document.addEventListener("mousedown", handleClickOutside)
-     return () => {
-        document.removeEventListener("mousedown", handleClickOutside)
-     }
-    }, [userProRef])
-    
-
-
+    const itemClass =
+        "flex w-full items-center gap-3 px-4 py-2 text-left text-sm transition-colors hover:bg-slate-50 dark:hover:bg-slate-600";
 
     return (
-        <>
-            <div
-
-                className="relative sm:relative sm:flex border rounded-full justify-center items-center px-1 py-1 lg:px-2 lg:py-2 gap-2 lg:gap-4 lg:mx-2"
-                style={{
-                    fontFamily: "Inter, sans-serif",
-                    fontSize: "13px",
-                    fontWeight: 300,
-                    color: "#787486",
-                    
-                }}
-
-                onMouseEnter={() => setIsHovered(true)}
-                    onMouseLeave={() => setIsHovered(false)}
-                    onClick={handleArrowClick}
+        <div ref={ref} className="relative shrink-0">
+            <button
+                type="button"
+                aria-haspopup="menu"
+                aria-expanded={open}
+                onClick={() => setOpen((o) => !o)}
+                className="flex h-10 items-center gap-3 rounded-full border border-[#DADDDD] dark:border-slate-600 p-0.5 sm:p-1 sm:pr-3 lg:h-auto transition-colors hover:border-[#34CAA5]"
+                style={{ fontFamily: "Inter, sans-serif" }}
             >
-                <img
-                    src={UserProfPic}
-                    alt="user-prof"
-                    className="w-[32px] h-[32px] sm:w-8 sm:h-8 md:w-10 md:h-10 rounded-full sm:hover:bg-[#34CAA5]"
+                <img src={UserProfPic} alt="Justin Bergson" className="h-[34px] w-[34px] sm:h-[30px] sm:w-[30px] lg:h-9 lg:w-9 rounded-full object-cover" />
+                <span className="hidden lg:block text-right leading-tight">
+                    <span className="block text-sm text-[#26282C] dark:text-white">Justin Bergson</span>
+                    <span className="block text-xs font-light text-[#787486] dark:text-slate-400">justin@gmail.com</span>
+                </span>
+                <ArrowDown2
+                    size="16"
+                    color="#697689"
+                    className={`hidden sm:block transition-transform ${open ? "rotate-180" : ""}`}
                 />
-                <div className="leading-4 hidden lg:block dark:lg:block ">
-                    <h4 className="text-[14px] text-right font-normal text-[#26282C] dark:text-white"
-                    >
-                        Justin Bergson
-                    </h4>
-                    <p
-                        className="text-[12px] pt-1 text-right font-extralight color-[#787486] dark:text-slate-400"
-                    >
-                        justin@gmail.com
-                    </p>
-                </div>
-                <div
-                    ref={userProRef}
-                    className=" hidden sm:block p-1 transition-colors duration-500"
-                >
-                    <ArrowDown2
-                        size="16"
-                        color="#E1DFDF"
-                        variant="Outline"
-                        className="hidden sm:block"
-                    />
-                </div>
-                {isDropdownOpen && (
-                    <div className="absolute md:left=8 top-10 -right-4 sm:-right-1 sm:top-9 md:top-12 mt-2 lg:top-[55px] lg:right-2 dark:text-white dark:bg-slate-800 bg-white dark:font-medium  rounded-md ">
-                        <ul className="py-2">
-                            <li className="px-3 py-[2px] sm:py-1 sm:px-4  md:px-6 lg:px-10 lg:py- hover:bg-[#34CAA5] dark:text-[#34CAA5] dark:hover:text-white cursor-pointer transition-colors duration-500 hover:rounded-md">
-                            Account
-                            </li>
-                            <li className="px-3 py-[2px] sm:py-1 sm:px-4  md:px-6 lg:px-10 lg:py-2 hover:bg-[#34CAA5] dark:text-[#34CAA5] dark:hover:text-white cursor-pointer transition-colors duration-500 hover:rounded-md">
-                                Profile
-                            </li>
-                            <li className="px-3 py-[2px] sm:py-1 sm:px-4  md:px-6 lg:px-10 lg:py-2 hover:bg-[#34CAA5] dark:text-[#34CAA5] dark:hover:text-white cursor-pointer transition-colors duration-500 hover:rounded-md">
-                                Product
-                            </li>
-                            <li className="px-3 py-[2px] sm:py-1 sm:px-4  md:px-6 lg:px-10 lg:py-2 hover:bg-[#34CAA5] dark:hover:text-white transition-colors duration-500 hover:rounded-md cursor-pointer text-red-700">
-                                Logout
-                            </li>
-                        </ul>
-                        
+            </button>
+
+            {open && (
+                <div role="menu" className="popover right-0 w-56 py-2">
+                    <div className="px-4 pb-2 mb-1 border-b border-slate-100 dark:border-slate-600 lg:hidden">
+                        <p className="text-sm font-medium">Justin Bergson</p>
+                        <p className="text-xs text-[#787486] dark:text-slate-400">justin@gmail.com</p>
                     </div>
-                )}
-            </div>
-        </>
+                    {items.map(({ label, icon: Icon, onClick }) => (
+                        <button key={label} type="button" role="menuitem" onClick={onClick} className={itemClass}>
+                            <Icon size="18" color="#697689" variant="Broken" />
+                            {label}
+                        </button>
+                    ))}
+                    <div className="my-1 border-t border-slate-100 dark:border-slate-600" />
+                    <button type="button" role="menuitem" onClick={run(requestLogout)} className={`${itemClass} text-[#ED544E]`}>
+                        <Logout size="18" color="currentColor" variant="Broken" />
+                        Sign out
+                    </button>
+                </div>
+            )}
+        </div>
     );
 };
 
