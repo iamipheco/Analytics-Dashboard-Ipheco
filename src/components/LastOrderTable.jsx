@@ -1,9 +1,11 @@
 import { useMemo, useState } from "react";
 import { toast } from "react-toastify";
-import { ArrowDown2, ArrowUp2, DocumentDownload, DocumentText, Printer } from "iconsax-react";
+import { DocumentDownload, DocumentText, Printer } from "iconsax-react";
 import { orders as initialOrders, formatCurrency, formatDate } from "../data/dashboardData";
 import { useApp } from "../context/AppContext";
 import Modal, { Button } from "./Modal";
+import { SortHeader } from "./Table";
+import { sortBy } from "../utils/sort";
 
 const STATUS_FILTERS = ["All", "Paid", "Refund"];
 const PREVIEW_ROWS = 5;
@@ -45,23 +47,6 @@ const printInvoice = (order) => {
     w.document.close();
 };
 
-const SortHeader = ({ label, field, sort, onSort, className = "" }) => {
-    const active = sort.field === field;
-    const Arrow = active && sort.dir === "asc" ? ArrowUp2 : ArrowDown2;
-    return (
-        <th scope="col" className={`px-3 py-3 font-medium ${className}`}>
-            <button
-                type="button"
-                onClick={() => onSort(field)}
-                className={`inline-flex items-center gap-1 hover:text-[#34CAA5] ${active ? "text-[#34CAA5]" : ""}`}
-            >
-                {label}
-                <Arrow size="12" color="currentColor" className={active ? "" : "opacity-40"} />
-            </button>
-        </th>
-    );
-};
-
 const LastOrdersTable = () => {
     const { searchQuery } = useApp();
     const [orders, setOrders] = useState(initialOrders);
@@ -79,12 +64,7 @@ const LastOrdersTable = () => {
                 (status === "All" || o.status === status) &&
                 (!q || o.name.toLowerCase().includes(q) || o.id.toLowerCase().includes(q))
         );
-        const dir = sort.dir === "asc" ? 1 : -1;
-        return [...filtered].sort((a, b) => {
-            const x = a[sort.field];
-            const y = b[sort.field];
-            return (typeof x === "string" ? x.localeCompare(y) : x - y) * dir;
-        });
+        return sortBy(filtered, sort);
     }, [orders, status, sort, searchQuery]);
 
     // The card shows a preview; "See All" opens every order in a pop-up. Searching shows all matches inline.

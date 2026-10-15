@@ -1,13 +1,12 @@
 import { useCallback, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
 import { ArrowDown2, Logout, Moon, Profile, Setting2, Sun1, Wallet } from "iconsax-react";
 import UserProfPic from "../assets/img/user-prof.jpg";
 import { useApp } from "../context/AppContext";
 import { useClickOutside } from "../hooks/useClickOutside";
 
 const UserProfile = () => {
-    const { isDarkMode, toggleDarkMode, requestLogout } = useApp();
+    const { isDarkMode, toggleDarkMode, requestLogout, profile } = useApp();
     const navigate = useNavigate();
     const [open, setOpen] = useState(false);
     const close = useCallback(() => setOpen(false), []);
@@ -19,8 +18,8 @@ const UserProfile = () => {
     };
 
     const items = [
-        { label: "My profile", icon: Profile, onClick: run(() => toast.info("Profile page is coming soon.")) },
-        { label: "Billing", icon: Wallet, onClick: run(() => toast.info("Billing page is coming soon.")) },
+        { label: "My profile", icon: Profile, onClick: run(() => navigate("/settings")) },
+        { label: "Billing", icon: Wallet, onClick: run(() => navigate("/billing")) },
         { label: "Settings", icon: Setting2, onClick: run(() => navigate("/settings")) },
         { label: isDarkMode ? "Light mode" : "Dark mode", icon: isDarkMode ? Sun1 : Moon, onClick: toggleDarkMode },
     ];
@@ -38,10 +37,10 @@ const UserProfile = () => {
                 className="flex h-10 items-center gap-3 rounded-full border border-[#DADDDD] dark:border-slate-600 p-0.5 sm:p-1 sm:pr-3 lg:h-auto transition-colors hover:border-[#34CAA5]"
                 style={{ fontFamily: "Inter, sans-serif" }}
             >
-                <img src={UserProfPic} alt="Justin Bergson" className="h-[34px] w-[34px] sm:h-[30px] sm:w-[30px] lg:h-9 lg:w-9 rounded-full object-cover" />
+                <img src={profile.avatar || UserProfPic} alt={profile.name} className="h-[34px] w-[34px] sm:h-[30px] sm:w-[30px] lg:h-9 lg:w-9 rounded-full object-cover" />
                 <span className="hidden lg:block text-right leading-tight">
-                    <span className="block text-sm text-[#26282C] dark:text-white">Justin Bergson</span>
-                    <span className="block text-xs font-light text-[#787486] dark:text-slate-400">justin@gmail.com</span>
+                    <span className="block text-sm text-[#26282C] dark:text-white">{profile.name}</span>
+                    <span className="block text-xs font-light text-[#787486] dark:text-slate-400">{profile.email}</span>
                 </span>
                 <ArrowDown2
                     size="16"
@@ -53,8 +52,8 @@ const UserProfile = () => {
             {open && (
                 <div role="menu" className="popover right-0 w-56 py-2">
                     <div className="px-4 pb-2 mb-1 border-b border-slate-100 dark:border-slate-600 lg:hidden">
-                        <p className="text-sm font-medium">Justin Bergson</p>
-                        <p className="text-xs text-[#787486] dark:text-slate-400">justin@gmail.com</p>
+                        <p className="text-sm font-medium">{profile.name}</p>
+                        <p className="text-xs text-[#787486] dark:text-slate-400">{profile.email}</p>
                     </div>
                     {items.map(({ label, icon: Icon, onClick }) => (
                         <button key={label} type="button" role="menuitem" onClick={onClick} className={itemClass}>

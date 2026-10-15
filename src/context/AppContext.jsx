@@ -1,6 +1,25 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
+import { DEFAULT_PREFERENCES, DEFAULT_PROFILE } from "../data/settingsData";
 
 const AppContext = createContext(null);
+
+const readStored = (key, fallback) => {
+    try {
+        const stored = JSON.parse(localStorage.getItem(key));
+        if (stored && typeof stored === "object") return { ...fallback, ...stored };
+    } catch {
+        // storage unavailable or corrupt
+    }
+    return fallback;
+};
+
+const writeStored = (key, value) => {
+    try {
+        localStorage.setItem(key, JSON.stringify(value));
+    } catch {
+        // storage full or unavailable: keep the in-memory value
+    }
+};
 
 const getInitialTheme = () => {
     try {
@@ -17,6 +36,11 @@ export const AppProvider = ({ children }) => {
     const [searchQuery, setSearchQuery] = useState("");
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [logoutRequested, setLogoutRequested] = useState(false);
+    const [profile, setProfile] = useState(() => readStored("profile", DEFAULT_PROFILE));
+    const [preferences, setPreferences] = useState(() => readStored("preferences", DEFAULT_PREFERENCES));
+
+    useEffect(() => writeStored("profile", profile), [profile]);
+    useEffect(() => writeStored("preferences", preferences), [preferences]);
 
     useEffect(() => {
         document.documentElement.classList.toggle("dark", isDarkMode);
@@ -34,6 +58,7 @@ export const AppProvider = ({ children }) => {
     const value = useMemo(
         () => ({
             isDarkMode,
+            setIsDarkMode,
             toggleDarkMode,
             searchQuery,
             setSearchQuery,
@@ -42,8 +67,12 @@ export const AppProvider = ({ children }) => {
             logoutRequested,
             requestLogout,
             cancelLogout,
+            profile,
+            setProfile,
+            preferences,
+            setPreferences,
         }),
-        [isDarkMode, toggleDarkMode, searchQuery, selectedDate, logoutRequested, requestLogout, cancelLogout]
+        [isDarkMode, toggleDarkMode, searchQuery, selectedDate, logoutRequested, requestLogout, cancelLogout, profile, preferences]
     );
 
     return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

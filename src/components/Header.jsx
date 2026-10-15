@@ -14,7 +14,21 @@ const Header = ({ onOpenMenu }) => {
     const [mobileSearch, setMobileSearch] = useState(false);
     const inputRef = useRef(null);
 
-    const title = sideData.find((i) => i.link === pathname)?.name ?? "Dashboard";
+    // Billing isn't in the sidebar (it lives in the avatar menu), so name it here.
+    const title = sideData.find((i) => i.link === pathname)?.name ?? { "/billing": "Billing" }[pathname] ?? "Dashboard";
+    const searchLabel = {
+        "/products": "Search products",
+        "/users": "Search customers",
+        "/messages": "Search messages",
+        "/support": "Search help",
+        "/tips": "Search tips",
+    }[pathname] ?? "Search orders";
+
+    // Each page has its own search, so start fresh when the page changes.
+    useEffect(() => {
+        setSearchQuery("");
+        setMobileSearch(false);
+    }, [pathname, setSearchQuery]);
 
     // "/" focuses search, like most dashboards.
     useEffect(() => {
@@ -71,8 +85,8 @@ const Header = ({ onOpenMenu }) => {
                                 e.currentTarget.blur();
                             }
                         }}
-                        placeholder="Search orders…"
-                        aria-label="Search orders"
+                        placeholder={`${searchLabel}…`}
+                        aria-label={searchLabel}
                         className="w-full md:w-56 lg:w-72 rounded-full border border-[#DADDDD] dark:border-slate-600 bg-white dark:bg-slate-700 py-2 pl-10 pr-9 text-sm outline-none transition focus:border-[#34CAA5] focus:ring-2 focus:ring-[#34CAA5]/20 placeholder:text-[#A3A3A3] dark:placeholder:text-slate-400 [&::-webkit-search-cancel-button]:hidden"
                     />
                     {searchQuery ? (

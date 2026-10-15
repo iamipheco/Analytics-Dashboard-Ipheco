@@ -14,7 +14,7 @@ import {
 export const sideData = [
     { name: "Dashboard", link: "/", icon: Category },
     { name: "Analytics", link: "/analytics", icon: TrendUp },
-    { name: "User", link: "/users", icon: Profile2User },
+    { name: "Users", link: "/users", icon: Profile2User },
     { name: "Messages", link: "/messages", icon: Box },
     { name: "Products", link: "/products", icon: DiscountShape },
     { name: "Support", link: "/support", icon: InfoCircle },
