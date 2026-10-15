@@ -107,9 +107,12 @@ const Header = ({ onOpenMenu }) => {
                 </div>
             </div>
 
-            <div className="hidden md:block">
-                <CalendarPaper />
-            </div>
+            {/* The date only drives the dashboard, so the picker only shows there. */}
+            {pathname === "/" && (
+                <div className="hidden md:block">
+                    <CalendarPaper />
+                </div>
+            )}
             <Notifications />
             <UserProfile />
         </header>

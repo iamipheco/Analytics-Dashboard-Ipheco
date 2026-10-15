@@ -1,7 +1,9 @@
-import { useId } from "react";
+import { useId, useMemo } from "react";
 import { BoxTick, Coin1, I3DRotate, ShoppingCart } from "iconsax-react";
 import { IoTrendingUp, IoTrendingDown } from "react-icons/io5";
-import { kpis } from "../data/dashboardData";
+import { useApp } from "../context/AppContext";
+import { computeKpis } from "../utils/dashboardStats";
+import { comparisonLabel } from "../utils/dateFilter";
 
 const ICONS = { BoxTick, Coin1, I3DRotate, ShoppingCart };
 const UP = "#34CAA5";
@@ -32,10 +34,11 @@ const Sparkline = ({ points, color, width = 106, height = 33 }) => {
     );
 };
 
-const KpiCard = ({ label, value, change, icon, prefix = "", trend }) => {
+const KpiCard = ({ label, value, change, icon, prefix = "", trend, lowerIsBetter, compareTo }) => {
     const Icon = ICONS[icon];
-    const up = change >= 0;
-    const color = up ? UP : DOWN;
+    const up = (change ?? 0) >= 0;
+    const good = lowerIsBetter ? !up : up;
+    const color = change === null ? "#A3A3A3" : good ? UP : DOWN;
     const TrendIcon = up ? IoTrendingUp : IoTrendingDown;
 
     return (
@@ -58,21 +61,31 @@ const KpiCard = ({ label, value, change, icon, prefix = "", trend }) => {
                     className="flex items-center gap-1 rounded-full px-2 py-1 text-xs font-medium"
                     style={{ color, backgroundColor: `${color}1A` }}
                 >
-                    <TrendIcon />
-                    {Math.abs(change)}%
+                    {change === null ? (
+                        "New"
+                    ) : (
+                        <>
+                            <TrendIcon />
+                            {Math.abs(change).toFixed(1)}%
+                        </>
+                    )}
                 </span>
-                <span className="text-xs text-[#606060] dark:text-slate-300 whitespace-nowrap">vs. last month</span>
+                <span className="text-xs text-[#606060] dark:text-slate-300 whitespace-nowrap">{compareTo}</span>
             </div>
         </div>
     );
 };
 
-const IncomeBox = () => (
-    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 h-full">
-        {kpis.map((kpi) => (
-            <KpiCard key={kpi.id} {...kpi} />
-        ))}
-    </div>
-);
+const IncomeBox = () => {
+    const { orders, dateFilter } = useApp();
+    const kpis = useMemo(() => computeKpis(orders, dateFilter), [orders, dateFilter]);
+    return (
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 h-full">
+            {kpis.map((kpi) => (
+                <KpiCard key={kpi.id} {...kpi} compareTo={comparisonLabel(dateFilter)} />
+            ))}
+        </div>
+    );
+};
 
 export default IncomeBox;

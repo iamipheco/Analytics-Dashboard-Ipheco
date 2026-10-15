@@ -1,8 +1,9 @@
 import { useMemo, useState } from "react";
 import { toast } from "react-toastify";
 import { DocumentDownload, DocumentText, Printer } from "iconsax-react";
-import { orders as initialOrders, formatCurrency, formatDate } from "../data/dashboardData";
+import { formatCurrency, formatDate } from "../data/dashboardData";
 import { useApp } from "../context/AppContext";
+import { filterLabel, inRange, rangeOf } from "../utils/dateFilter";
 import Modal, { Button } from "./Modal";
 import { SortHeader } from "./Table";
 import { sortBy } from "../utils/sort";
@@ -48,8 +49,7 @@ const printInvoice = (order) => {
 };
 
 const LastOrdersTable = () => {
-    const { searchQuery } = useApp();
-    const [orders, setOrders] = useState(initialOrders);
+    const { searchQuery, orders, setOrders, dateFilter } = useApp();
     const [status, setStatus] = useState("All");
     const [sort, setSort] = useState({ field: "date", dir: "desc" });
     const [showAll, setShowAll] = useState(false);
@@ -59,13 +59,15 @@ const LastOrdersTable = () => {
 
     const rows = useMemo(() => {
         const q = searchQuery.trim().toLowerCase();
+        const range = rangeOf(dateFilter);
         const filtered = orders.filter(
             (o) =>
+                inRange(o.date, range) &&
                 (status === "All" || o.status === status) &&
                 (!q || o.name.toLowerCase().includes(q) || o.id.toLowerCase().includes(q))
         );
         return sortBy(filtered, sort);
-    }, [orders, status, sort, searchQuery]);
+    }, [orders, status, sort, searchQuery, dateFilter]);
 
     // The card shows a preview; "See All" opens every order in a pop-up. Searching shows all matches inline.
     const preview = searchQuery ? rows : rows.slice(0, PREVIEW_ROWS);
@@ -159,7 +161,7 @@ const LastOrdersTable = () => {
                 {list.length === 0 && (
                     <tr>
                         <td colSpan={5} className="px-3 py-10 text-center text-xs text-[#A3A3A3]">
-                            No orders match{searchQuery ? ` “${searchQuery}”` : " this filter"}.
+                            No orders match{searchQuery ? ` “${searchQuery}”` : status === "All" ? "" : " this filter"} in {filterLabel(dateFilter)}.
                         </td>
                     </tr>
                 )}
@@ -170,7 +172,12 @@ const LastOrdersTable = () => {
     return (
         <div className="card p-2 h-full flex flex-col">
             <div className="flex flex-wrap items-center justify-between gap-2 px-3 pt-3 pb-2">
-                <h2 className="card-title">Last Orders</h2>
+                <div>
+                    <h2 className="card-title">Last Orders</h2>
+                    <p className="mt-0.5 text-xs text-[#A3A3A3]">
+                        {rows.length} in {filterLabel(dateFilter)}
+                    </p>
+                </div>
                 <div className="flex items-center gap-2">
                     {toolbar}
                     <button type="button" onClick={() => setShowAll(true)} className="link-action">
@@ -184,7 +191,7 @@ const LastOrdersTable = () => {
             <Modal
                 open={showAll}
                 onClose={() => !selected && setShowAll(false)}
-                title={`All orders (${rows.length})`}
+                title={`Orders in ${filterLabel(dateFilter)} (${rows.length})`}
                 size="max-w-4xl"
             >
                 <div className="mb-3 flex justify-end">
