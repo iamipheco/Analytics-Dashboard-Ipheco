@@ -10,54 +10,15 @@ import {
     Logout,
 } from "iconsax-react";
 
-
+// Icons inherit the link's text color so hover/active styling is pure CSS.
 export const sideData = [
-    {
-        name: "Dashboard",
-        link: "/",
-        icon: <Category color="#697689" variant="Bulk"/>,
-    },
-    {
-        name: "Analytics",
-        link: "/analytics",
-        icon: <TrendUp color="#697689" variant="Broken"/>,
-    },
-    {
-        name: "User",
-        link: "/user",
-        icon: <Profile2User color="#697689" variant="Broken"/>,
-    },
-    {
-        name: "Messages",
-        link: "/messages",
-        icon: <Box color="#697689" variant="Broken"/>,
-    },
-    {
-        name: "Products",
-        link: "/products",
-        icon: <DiscountShape color="#697689" variant="Broken"/>,
-    },
-    {
-        name: "Support",
-        link: "/support",
-        icon: <InfoCircle color="#697689" variant="Broken"/>,
-    },
-    {
-        name: "Tips", 
-        link: "/tips",
-        icon: <ArrowCircleRight2 color="#697689" variant="Broken"/>,
-        margin: true,
-    },
-    {
-        name: "Settings",
-        link: "/settings",
-        icon: <Setting2 color="#697689" variant="Broken"/>,
-    },
-    {
-        name: "Logout",
-        link: "/logout",
-        icon: <Logout color="#697689" variant="Broken"/>
-    }
+    { name: "Dashboard", link: "/", icon: Category },
+    { name: "Analytics", link: "/analytics", icon: TrendUp },
+    { name: "Users", link: "/users", icon: Profile2User },
+    { name: "Messages", link: "/messages", icon: Box },
+    { name: "Products", link: "/products", icon: DiscountShape },
+    { name: "Support", link: "/support", icon: InfoCircle },
+    { name: "Tips", link: "/tips", icon: ArrowCircleRight2, section: "bottom" },
+    { name: "Settings", link: "/settings", icon: Setting2, section: "bottom" },
+    { name: "Logout", action: "logout", icon: Logout, section: "bottom" },
 ];
-
-

@@ -1,17 +1,36 @@
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 body {
-    font-family: 'Plus Jakarta Sans', sans-serif ;
-  }
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  @apply bg-[#FAFAFA] text-[#26282C] dark:bg-slate-800 dark:text-white;
+}
 
-  @layer utilities {
-    .placeholder-middle::placeholder {
-      transform: translateY(-50%);
-    }
+@layer components {
+  .card {
+    @apply rounded-xl bg-white shadow-sm ring-1 ring-black/[0.03] dark:bg-slate-700 dark:ring-white/5 dark:text-white;
   }
+  .card-title {
+    @apply font-semibold text-sm text-[#26282C] dark:text-white;
+  }
+  .link-action {
+    @apply text-sm font-medium text-[#34CAA5] hover:underline cursor-pointer;
+  }
+  .popover {
+    @apply absolute z-40 mt-2 rounded-xl bg-white dark:bg-slate-700 shadow-lg ring-1 ring-black/5 dark:ring-white/10 animate-pop-in;
+  }
+}
+
+/* thin scrollbars inside cards */
+.scroll-thin::-webkit-scrollbar { width: 6px; height: 6px; }
+.scroll-thin::-webkit-scrollbar-thumb { @apply rounded-full bg-slate-300 dark:bg-slate-500; }
+
+/* toasts use the app font */
+.Toastify__toast { font-family: inherit; font-size: 0.875rem; border-radius: 0.75rem; }
+
+/* hide the page scrollbar but keep scrolling */
+.no-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
+.no-scrollbar::-webkit-scrollbar { display: none; }
