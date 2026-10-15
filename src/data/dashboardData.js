@@ -6,49 +6,34 @@ import userImage5 from "../assets/img/user5.png";
 
 export const BRAND = "#34CAA5";
 
-export const salesTrends = {
-    weekly: {
-        labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
-        data: [12, 18, 9, 24, 31, 42, 27],
-    },
-    monthly: {
-        labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-        data: [7, 20, 4, 30, 10, 45, 10, 22, 35, 5, 32, 28],
-    },
-    yearly: {
-        labels: ["2019", "2020", "2021", "2022", "2023", "2024"],
-        data: [180, 140, 210, 260, 245, 310],
-    },
+// Seeded RNG so the mock data is stable between reloads.
+const mulberry32 = (seed) => () => {
+    seed |= 0;
+    seed = (seed + 0x6d2b79f5) | 0;
+    let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
 };
 
-export const kpis = [
-    { id: "orders", label: "Total Order", value: 350, change: 23.5, icon: "BoxTick", trend: [4, 6, 5, 8, 7, 9, 8, 11, 10, 13] },
-    { id: "refunds", label: "Total Refund", value: 270, change: -23.5, icon: "I3DRotate", trend: [12, 10, 11, 9, 10, 7, 8, 6, 7, 5] },
-    { id: "sales", label: "Average Sales", value: 1567, change: -23.5, icon: "ShoppingCart", trend: [9, 11, 8, 10, 7, 9, 6, 8, 5, 6] },
-    { id: "income", label: "Total Income", value: 350000, change: 23.5, icon: "Coin1", prefix: "$", trend: [3, 5, 4, 7, 6, 8, 9, 8, 11, 12] },
-];
+export const toIsoDate = (d) =>
+    `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
 
 const images = [userImage1, userImage2, userImage3, userImage4, userImage5];
 
-export const orders = [
-    ["Marcus Bergson", "2023-11-15", 80000, "Paid"],
-    ["Jaydon Vaccaro", "2023-11-15", 150000, "Refund"],
-    ["Corey Schleifer", "2023-11-14", 87000, "Paid"],
-    ["Cooper Press", "2023-11-14", 100000, "Refund"],
-    ["Phillip Lubin", "2023-11-13", 78000, "Paid"],
-    ["Ahmad Rosser", "2023-11-12", 64000, "Paid"],
-    ["Kianna Dias", "2023-11-11", 120500, "Paid"],
-    ["Tatiana Geidt", "2023-11-10", 45200, "Refund"],
-    ["Zaire Calzoni", "2023-11-09", 99000, "Paid"],
-    ["Lincoln Herwitz", "2023-11-08", 51300, "Paid"],
-].map(([name, date, amount, status], i) => ({
-    id: `INV-${(1042 - i).toString().padStart(5, "0")}`,
-    name,
-    date,
-    amount,
-    status,
-    userImage: images[i % images.length],
-}));
+const customers = [
+    "Marcus Bergson",
+    "Jaydon Vaccaro",
+    "Corey Schleifer",
+    "Cooper Press",
+    "Phillip Lubin",
+    "Ahmad Rosser",
+    "Kianna Dias",
+    "Tatiana Geidt",
+    "Zaire Calzoni",
+    "Lincoln Herwitz",
+];
+
+export const ORDER_HISTORY_YEARS = 3;
 
 export const platforms = [
     { name: "Book Bazaar", progress: 30, amount: 2500000, color: "#6160DC" },
@@ -59,6 +44,46 @@ export const platforms = [
     { name: "Gadget Grove", progress: 42, amount: 980000, color: "#A66CFF" },
     { name: "Home Haven", progress: 22, amount: 640000, color: "#F37BB8" },
 ];
+
+const pickPlatform = (() => {
+    const total = platforms.reduce((t, p) => t + p.amount, 0);
+    return (r) => {
+        let acc = 0;
+        for (const p of platforms) {
+            acc += p.amount / total;
+            if (r < acc) return p.name;
+        }
+        return platforms[platforms.length - 1].name;
+    };
+})();
+
+// About three years of orders up to today, newest first. Volume grows over time and peaks at weekends.
+export const orders = (() => {
+    const rand = mulberry32(2024);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const days = ORDER_HISTORY_YEARS * 365;
+    const list = [];
+    for (let i = days - 1; i >= 0; i--) {
+        const date = new Date(today);
+        date.setDate(today.getDate() - i);
+        const growth = 1 + (days - i) / days;
+        const weekend = [0, 6].includes(date.getDay()) ? 1.4 : 1;
+        const count = Math.floor(rand() * 3 * growth * weekend);
+        for (let n = 0; n < count; n++) {
+            const c = Math.floor(rand() * customers.length);
+            list.push({
+                name: customers[c],
+                userImage: images[c % images.length],
+                date: toIsoDate(date),
+                amount: Math.round((500 + rand() * rand() * 14000) / 10) * 10,
+                status: rand() < 0.12 ? "Refund" : "Paid",
+                platform: pickPlatform(rand()),
+            });
+        }
+    }
+    return list.reverse().map((o, i) => ({ ...o, id: `INV-${String(list.length - i).padStart(5, "0")}` }));
+})();
 
 export const initialNotifications = [
     { id: 1, title: "New order received", body: "Marcus Bergson placed an order for $80,000.", time: "2m ago", read: false },

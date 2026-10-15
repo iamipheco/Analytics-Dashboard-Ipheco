@@ -2,7 +2,8 @@ import { useCallback, useMemo, useState } from "react";
 import { Bar } from "react-chartjs-2";
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Tooltip } from "chart.js";
 import { ArrowDown2, TickCircle } from "iconsax-react";
-import { salesTrends } from "../data/dashboardData";
+import { formatCurrency } from "../data/dashboardData";
+import { computeTrend } from "../utils/dashboardStats";
 import { useApp } from "../context/AppContext";
 import { useClickOutside } from "../hooks/useClickOutside";
 
@@ -14,16 +15,22 @@ const PERIODS = [
     { id: "yearly", label: "Yearly" },
 ];
 
+const compact = (v) =>
+    new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", notation: "compact", maximumFractionDigits: 1 }).format(v);
+
 const MyBarChart = () => {
-    const { isDarkMode } = useApp();
+    const { isDarkMode, orders, dateFilter } = useApp();
     const [period, setPeriod] = useState("monthly");
     const [menuOpen, setMenuOpen] = useState(false);
     const close = useCallback(() => setMenuOpen(false), []);
     const menuRef = useClickOutside(close, menuOpen);
 
-    const series = salesTrends[period];
+    const buckets = useMemo(() => computeTrend(orders, period, dateFilter), [orders, period, dateFilter]);
+    const series = useMemo(() => ({ labels: buckets.map((b) => b.label), data: buckets.map((b) => b.value) }), [buckets]);
     const total = series.data.reduce((a, b) => a + b, 0);
     const peakIndex = series.data.indexOf(Math.max(...series.data));
+    // Bars inside the selected day or month are solid; if every bar is selected, fall back to marking the peak.
+    const highlighted = buckets.every((b) => b.highlight) ? buckets.map((_, i) => i === peakIndex) : buckets.map((b) => b.highlight);
 
     const data = useMemo(
         () => ({
@@ -31,10 +38,7 @@ const MyBarChart = () => {
             datasets: [
                 {
                     data: series.data,
-                    // Peak bar is solid; the rest are tinted.
-                    backgroundColor: series.data.map((_, i) =>
-                        i === peakIndex ? "rgba(52, 202, 165, 0.9)" : "rgba(52, 202, 165, 0.25)"
-                    ),
+                    backgroundColor: highlighted.map((on) => (on ? "rgba(52, 202, 165, 0.9)" : "rgba(52, 202, 165, 0.25)")),
                     hoverBackgroundColor: "rgba(52, 202, 165, 0.9)",
                     borderRadius: 20,
                     borderSkipped: false,
@@ -42,7 +46,7 @@ const MyBarChart = () => {
                 },
             ],
         }),
-        [series, peakIndex]
+        [series, highlighted]
     );
 
     const options = useMemo(() => {
@@ -59,7 +63,7 @@ const MyBarChart = () => {
                     padding: 10,
                     cornerRadius: 8,
                     displayColors: false,
-                    callbacks: { label: (ctx) => `$${ctx.parsed.y.toLocaleString()}k` },
+                    callbacks: { label: (ctx) => formatCurrency(ctx.parsed.y) },
                 },
             },
             scales: {
@@ -68,7 +72,7 @@ const MyBarChart = () => {
                     beginAtZero: true,
                     border: { display: false },
                     grid: { color: grid, drawTicks: false },
-                    ticks: { color: tick, padding: 8, maxTicksLimit: 6, callback: (v) => `${v}k` },
+                    ticks: { color: tick, padding: 8, maxTicksLimit: 6, callback: compact },
                 },
             },
         };
@@ -82,7 +86,7 @@ const MyBarChart = () => {
                 <div>
                     <h2 className="card-title">Sales Trends</h2>
                     <p className="mt-0.5 text-xs text-[#737373] dark:text-slate-300">
-                        ${total.toLocaleString()}k total · peak in <span className="text-[#34CAA5] font-medium">{series.labels[peakIndex]}</span>
+                        {formatCurrency(total)} total · peak in <span className="text-[#34CAA5] font-medium">{series.labels[peakIndex]}</span>
                     </p>
                 </div>
                 <div className="flex items-center gap-2">

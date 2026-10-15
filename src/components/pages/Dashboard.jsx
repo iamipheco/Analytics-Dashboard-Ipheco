@@ -2,10 +2,14 @@ import MyBarChart from "../MyBarChart";
 import LastOrdersTable from "../LastOrderTable";
 import IncomeBox from "../IncomeBox";
 import Platforms from "../Platforms";
+import DateBar from "../DateBar";
 
 const Dashboard = () => {
     return (
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 lg:gap-5 [&>*]:min-w-0">
+            <div className="lg:col-span-5">
+                <DateBar />
+            </div>
             <div className="lg:col-span-3">
                 <MyBarChart />
             </div>

@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
-import { Outlet, useLocation } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import Header from "./Header";
 import Sidebar from "./Sidebar";
 import Modal, { Button } from "./Modal";
 import { useApp } from "../context/AppContext";
 
 const MainLayout = () => {
-    const { isDarkMode, logoutRequested, cancelLogout } = useApp();
+    const { logoutRequested, cancelLogout, signOut } = useApp();
+    const navigate = useNavigate();
     const [mobileOpen, setMobileOpen] = useState(false);
     const location = useLocation();
 
@@ -16,7 +16,8 @@ const MainLayout = () => {
     useEffect(() => setMobileOpen(false), [location.pathname]);
 
     const confirmLogout = () => {
-        cancelLogout();
+        signOut();
+        navigate("/login", { replace: true });
         toast.success("You have been signed out.");
     };
 
@@ -47,7 +48,6 @@ const MainLayout = () => {
                 </p>
             </Modal>
 
-            <ToastContainer position="bottom-right" autoClose={2500} theme={isDarkMode ? "dark" : "light"} />
         </section>
     );
 };

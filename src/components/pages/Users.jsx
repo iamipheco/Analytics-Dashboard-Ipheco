@@ -4,6 +4,7 @@ import { ACTIVE_DAYS, users } from "../../data/usersData";
 import { formatDate } from "../../data/dashboardData";
 import { useApp } from "../../context/AppContext";
 import Modal from "../Modal";
+import Select from "../Select";
 import { Pagination, SortHeader } from "../Table";
 import { sortBy } from "../../utils/sort";
 
@@ -48,11 +49,44 @@ const StatusPill = ({ status }) => (
 );
 
 const SummaryTile = ({ label, value, hint }) => (
-    <div className="card p-5">
-        <h3 className="text-sm text-[#898989] dark:text-slate-300">{label}</h3>
-        <p className="mt-1 text-2xl font-semibold">{value}</p>
-        {hint && <p className="mt-1 text-xs text-[#A3A3A3]">{hint}</p>}
+    <div className="card p-4 sm:p-5">
+        <h3 className="text-xs sm:text-sm text-[#898989] dark:text-slate-300">{label}</h3>
+        <p className="mt-1 text-xl sm:text-2xl font-semibold">{value}</p>
+        {hint && <p className="mt-1 text-[11px] sm:text-xs text-[#A3A3A3]">{hint}</p>}
     </div>
+);
+
+// Phones have no column headers to tap, so sorting is a dropdown there.
+const MOBILE_SORTS = [
+    { value: "totalSpent-desc", label: "Top spenders" },
+    { value: "lastOrder-desc", label: "Most recent order" },
+    { value: "orderCount-desc", label: "Most orders" },
+    { value: "name-asc", label: "Name (A–Z)" },
+];
+
+const UserCard = ({ user: u, onOpen }) => (
+    <li>
+        <button
+            type="button"
+            onClick={onOpen}
+            className="flex w-full items-center gap-3 px-3 py-3.5 text-left transition-colors hover:bg-slate-50 dark:hover:bg-slate-600/50"
+        >
+            <Avatar user={u} size="h-10 w-10" />
+            <span className="min-w-0 flex-1">
+                <span className="flex items-start justify-between gap-2">
+                    <span className="truncate text-sm font-medium">{u.name}</span>
+                    <span className="shrink-0 text-sm font-semibold tabular-nums">{formatMoney(u.totalSpent)}</span>
+                </span>
+                <span className="mt-0.5 block truncate text-xs text-[#A3A3A3]">
+                    {u.location} · {u.orderCount} {u.orderCount === 1 ? "order" : "orders"}
+                </span>
+                <span className="mt-2 flex items-center justify-between gap-2">
+                    <StatusPill status={u.status} />
+                    <span className="text-[11px] text-[#737373] dark:text-slate-300">Last order {formatDate(u.lastOrder)}</span>
+                </span>
+            </span>
+        </button>
+    </li>
 );
 
 const UserDetails = ({ user, onClose }) => (
@@ -162,9 +196,11 @@ const Users = () => {
     const onSort = (field) =>
         setSort((s) => ({ field, dir: s.field === field && s.dir === "desc" ? "asc" : "desc" }));
 
+    const sortValue = `${sort.field}-${sort.dir}`;
+
     return (
         <div className="flex flex-col gap-4 lg:gap-5 [&>*]:min-w-0">
-            <div className="grid grid-cols-2 xl:grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 xl:grid-cols-4 gap-3 sm:gap-4">
                 <SummaryTile label="Customers" value={summary.total} />
                 <SummaryTile label="Active" value={summary.active} hint={`Ordered in the last ${ACTIVE_DAYS} days`} />
                 <SummaryTile label="Avg. lifetime value" value={formatMoney(summary.avgValue)} hint="Paid orders per customer" />
@@ -172,29 +208,56 @@ const Users = () => {
             </div>
 
             <div className="card p-2">
-                <div className="flex flex-wrap items-center justify-between gap-2 px-3 pt-3 pb-2">
+                <div className="flex flex-col gap-3 px-3 pt-3 pb-2 md:flex-row md:flex-wrap md:items-center md:justify-between">
                     <h2 className="card-title">
                         Customers <span className="font-normal text-[#A3A3A3]">({rows.length})</span>
                     </h2>
-                    <div className="flex rounded-full bg-slate-100 dark:bg-slate-600 p-0.5 text-xs">
-                        {STATUS_FILTERS.map((s) => (
-                            <button
-                                key={s}
-                                type="button"
-                                onClick={() => setStatus(s)}
-                                className={`rounded-full px-3 py-1 transition-colors ${
-                                    status === s
-                                        ? "bg-white dark:bg-slate-800 shadow-sm font-medium text-[#26282C] dark:text-white"
-                                        : "text-[#737373] dark:text-slate-300"
-                                }`}
-                            >
-                                {s}
-                            </button>
-                        ))}
+                    <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
+                        <div className="flex rounded-full bg-slate-100 dark:bg-slate-600 p-0.5 text-xs [&>button]:flex-1 md:[&>button]:flex-none">
+                            {STATUS_FILTERS.map((s) => (
+                                <button
+                                    key={s}
+                                    type="button"
+                                    onClick={() => setStatus(s)}
+                                    className={`rounded-full px-3 py-1.5 md:py-1 transition-colors ${
+                                        status === s
+                                            ? "bg-white dark:bg-slate-800 shadow-sm font-medium text-[#26282C] dark:text-white"
+                                            : "text-[#737373] dark:text-slate-300"
+                                    }`}
+                                >
+                                    {s}
+                                </button>
+                            ))}
+                        </div>
+                        <Select
+                            variant="pill"
+                            aria-label="Sort by"
+                            className="md:hidden sm:min-w-[200px]"
+                            value={sortValue}
+                            onChange={(v) => {
+                                const [field, dir] = v.split("-");
+                                setSort({ field, dir });
+                            }}
+                            options={[
+                                ...(MOBILE_SORTS.some((o) => o.value === sortValue) ? [] : [{ value: sortValue, label: "Sort: Custom order" }]),
+                                ...MOBILE_SORTS.map((o) => ({ value: o.value, label: `Sort: ${o.label}` })),
+                            ]}
+                        />
                     </div>
                 </div>
 
-                <div className="overflow-x-auto scroll-thin">
+                <ul className="divide-y divide-[#EDF2F6] border-t border-[#EDF2F6] dark:divide-slate-600 dark:border-slate-600 md:hidden">
+                    {visible.map((u) => (
+                        <UserCard key={u.id} user={u} onOpen={() => setSelected(u)} />
+                    ))}
+                    {visible.length === 0 && (
+                        <li className="px-3 py-10 text-center text-xs text-[#A3A3A3]">
+                            No customers match{searchQuery ? ` “${searchQuery}”` : " this filter"}.
+                        </li>
+                    )}
+                </ul>
+
+                <div className="hidden md:block overflow-x-auto scroll-thin">
                     <table className="w-full min-w-[760px] text-left text-sm">
                         <thead className="text-xs text-[#737373] dark:text-slate-300">
                             <tr>
